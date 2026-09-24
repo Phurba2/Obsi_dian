@@ -289,7 +289,7 @@ These are foundation models mostly intended to be fine-tuned on downstream tasks
 Trying thousands of pretrained models is not feasible. These models are great starting points for base performance:
 
 ```mermaid
-graph TD
+graph LR
     A[Solid Baselines] --> B[BERT base model uncased]
     A --> C[RoBERTa base model]
     A --> D[DistilBERT base model uncased]
