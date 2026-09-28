@@ -189,7 +189,7 @@ So PostgreSQL 18 can now load `pgvector` extension.
 
 ---
 
-## 1. Enable pgvector in your database
+## Enable pgvector in your database
 
 First connect to PostgreSQL:
 
@@ -216,13 +216,12 @@ CREATE EXTENSION
 
 ---
 
-## 2. Verify
+## Verify
 
 
 ```sql
 \dx
 ```
-
 
 ```text
              List of installed extensions
@@ -232,19 +231,11 @@ CREATE EXTENSION
  vector   | 0.8.6   | public     | vector data type and ...
 ```
 
-You can also run:
-
-```sql
-SELECT extversion
-FROM pg_extension
-WHERE extname = 'vector';
-```
-
 ---
 
-# 3. Test actual vector
+# Test actual vector
 
-Create a small test table:
+Create small test table:
 
 ```sql
 CREATE TABLE test_vectors (
@@ -365,7 +356,6 @@ furba
 ```sql
 CREATE DATABASE ragdb;
 ```
-
 
 ```sql
 \q
