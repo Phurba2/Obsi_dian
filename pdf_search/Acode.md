@@ -501,8 +501,8 @@ connect :
 ```text
 You are now connected to database "ragdb" as user "furba".
 ```
-enable pgvector:
 
+enable pgvector:
 ```sql
 CREATE EXTENSION IF NOT EXISTS vector;
 ```
@@ -510,7 +510,6 @@ CREATE EXTENSION IF NOT EXISTS vector;
 ```text
 CREATE EXTENSION
 ```
-
 
 ```sql
 SELECT * FROM pg_extension WHERE extname = 'vector';
@@ -542,13 +541,9 @@ PostgreSQL 18
 | HINT:  Must be superuser to create this extension.         |
 | ragdb=>                                                    |
 
----
-
 ```bash
 sudo -u postgres psql -d ragdb
 ```
-
-
 
 ```text
 ragdb=#
@@ -566,12 +561,9 @@ CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION
 ```
 
----
-
 ```sql
 SELECT * FROM pg_extension WHERE extname = 'vector';
 ```
-
 
 ```text
  oid  | extname | extowner | extnamespace | extrelocatable | extversion
@@ -579,35 +571,27 @@ SELECT * FROM pg_extension WHERE extname = 'vector';
  ...  | vector  | ...      | ...          | t              | 0.8.6
 ```
 
----
-
 ```sql
 \q
 ```
-
 
 ```bash
 psql -d ragdb
 ```
 
-
 ```text
 ragdb=>
 ```
 
-
 ```sql
 SELECT '[1,2,3]'::vector;
 ```
-
 
 ```text
  vector
 ---------
  [1,2,3]
 ```
-
----
 
 ```text
                   PostgreSQL
@@ -622,18 +606,3 @@ SELECT '[1,2,3]'::vector;
           ▼                       ▼
    Server has vector.so      ragdb has vector
 ```
-
-You already completed **installation**:
-
-```text
-/usr/lib/postgresql/18/lib/vector.so
-```
-
-**enable it in `ragdb`**
-
-```sql
-CREATE EXTENSION vector;
-```
-
----
-
