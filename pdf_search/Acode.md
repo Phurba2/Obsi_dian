@@ -18,22 +18,19 @@
 fatal error: postgres.h: No such file or directory
 ```
 
-`postgres.h` **PostgreSQL server development header which files are missing or Postgres 18 isn't installed correclty**
+`postgres.h` **PostgreSQL server development header which files are missing 
 
 ```text
 /usr/include/postgresql/18/server
 ```
 
-
 ```bash
 psql --version
 ```
 
-
 ```bash
 pg_config --version
 ```
-
 
 ```bash
 pg_config --includedir-server
@@ -46,14 +43,10 @@ PostgreSQL 18.x
 /usr/include/postgresql/18/server
 ```
 
----
-
-
 ```bash
 sudo apt update
 sudo apt install postgresql-server-dev-18
 ```
-
 
 ```bash
 ls /usr/include/postgresql/18/server/postgres.h
@@ -94,29 +87,11 @@ CREATE EXTENSION vector;
 SELECT extversion FROM pg_extension WHERE extname = 'vector';
 ```
 
-
 ```text
  extversion
 ------------
  0.x.x
 ```
-
----
-
-```text
-pgvector source code
-       │
-       │ make
-       ▼
-    gcc compiler
-       │
-       │ needs
-       ▼
-PostgreSQL development files
-       │
-       └── postgres.h  ← MISSING
-```
-
 
 ```bash
 sudo apt install postgresql-server-dev-18
@@ -191,20 +166,10 @@ So PostgreSQL 18 can now load `pgvector` extension.
 
 ## Enable pgvector in your database
 
-First connect to PostgreSQL:
 
 ```bash
 psql
 ```
-
-
-```text
-psql (18.x)
-Type "help" for help.
-
-postgres=#
-```
-
 
 ```sql
 CREATE EXTENSION vector;
@@ -213,11 +178,6 @@ CREATE EXTENSION vector;
 ```text
 CREATE EXTENSION
 ```
-
----
-
-## Verify
-
 
 ```sql
 \dx
@@ -282,30 +242,9 @@ You should get `hello` and `good morning`.
 
 ---
 
-
-```text
-PostgreSQL server
-      │
-      ├── running ✅
-      │
-      └── PostgreSQL user "furba" ❌ doesn't exist
-```
-
----
-
 ```bash
 sudo -u postgres psql
 ```
-
-
-```text
-psql (18.x)
-Type "help" for help.
-
-postgres=#
-```
-
----
 
 ```sql
 \du
@@ -319,29 +258,22 @@ postgres=#
  postgres  | Superuser, Create role, Create DB, Replication
 ```
 
----
-
 ```sql
 CREATE ROLE furba WITH LOGIN CREATEDB PASSWORD 'your_password';
 ```
 
-
 ```sql
 \du
 ```
-
 
 ```text
 postgres
 furba
 ```
 
-
 ```sql
 \q
 ```
-
----
 
 ```bash
 psql
@@ -369,8 +301,6 @@ psql -d ragdb
 ragdb=#
 ```
 
----
-
 ```sql
 CREATE EXTENSION IF NOT EXISTS vector;
 ```
@@ -389,102 +319,25 @@ WHERE extname = 'vector';
 extname | vector
 ```
 
----
-
-```text
-Ubuntu
-  │
-  │ sudo -u postgres psql
-  ▼
-PostgreSQL administrator
-  │
-  ├── CREATE ROLE furba
-  │
-  └── CREATE DATABASE ragdb
-                │
-                ▼
-          psql -d ragdb
-                │
-                ▼
-       CREATE EXTENSION vector
-                │
-                ▼
-          PostgreSQL + pgvector
-```
-
----
-
-```bash
-sudo make install
-```
-
-does **not automatically enable it in every database**.
-
-You enable it separately in each database:
-
-```sql
-CREATE EXTENSION vector;
-```
-
----
-
-| `furba@fu:~$ psql`                                                      |
-| ----------------------------------------------------------------------- |
-| database "furba" does not exist                                         |
-| furba@fu:~$ sudo -u postgres psql                                       |
-| psql (18.6 (Ubuntu 18.6-1.pgdg24.04+2))                                 |
-| postgres=# \du                                                          |
-| List of roles                                                           |
-| Role name \| Attributes   \|                                            |
-| furba           \| Create DB                                            |
-| postgres  \| Superuser, Create role, Create DB, Replication, Bypass RLS |
-| postgres=#                                                              |
-
----
-
-```bash
-psql
-```
-
-PostgreSQL tries to connect :
-
-```text
-user     = furba
-database = furba
-```
-
-You have **user**, but not a **database named `furba`**.
-
----
+| `furba@fu:~$ psql`              |
+| ------------------------------- |
+| database "furba" does not exist |
 
 ```sql
 CREATE DATABASE furba OWNER furba;
 ```
 
-
 ```text
 CREATE DATABASE
 ```
-
 
 ```sql
 \q
 ```
 
-
 ```bash
 psql
 ```
-
-
-```text
-psql (18.6 ...)
-Type "help" for help.
-
-furba=#
-```
-
----
 
 From `furba=#`:
 
@@ -492,14 +345,8 @@ From `furba=#`:
 CREATE DATABASE ragdb;
 ```
 
-connect :
-
 ```sql
 \c ragdb
-```
-
-```text
-You are now connected to database "ragdb" as user "furba".
 ```
 
 enable pgvector:
@@ -549,10 +396,6 @@ sudo -u postgres psql -d ragdb
 ragdb=#
 ```
 
-`#` instead of `>` — you're connected as  superuser.
-
----
-
 ```sql
 CREATE EXTENSION IF NOT EXISTS vector;
 ```
@@ -573,36 +416,4 @@ SELECT * FROM pg_extension WHERE extname = 'vector';
 
 ```sql
 \q
-```
-
-```bash
-psql -d ragdb
-```
-
-```text
-ragdb=>
-```
-
-```sql
-SELECT '[1,2,3]'::vector;
-```
-
-```text
- vector
----------
- [1,2,3]
-```
-
-```text
-                  PostgreSQL
-                      │
-          ┌───────────┴───────────┐
-          │                       │
-       INSTALL                 ENABLE
-       pgvector                pgvector
-          │                       │
-    sudo make install       CREATE EXTENSION
-          │                       │
-          ▼                       ▼
-   Server has vector.so      ragdb has vector
 ```
