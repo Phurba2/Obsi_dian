@@ -1,4 +1,4 @@
-```bash
+ri```bash
 cd project
 python3 -m venv env
 source env/bin/activate
